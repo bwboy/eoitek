@@ -36,8 +36,8 @@ RUN set -x \
 # Failed to write '262144' to '/proc/sys/vm/max_map_count': Read-only file system
 	&& dpkg-divert --rename /usr/lib/sysctl.d/elasticsearch.conf \
 	\
-	&& apt-get update \
-	&& apt-get install -y --no-install-recommends "elasticsearch=$ELASTICSEARCH_DEB_VERSION" \
+	&& yum update all\
+	&& yum install -y --no-install-recommends "elasticsearch=$ELASTICSEARCH_DEB_VERSION" \
 	&& rm -rf /var/lib/apt/lists/*
 
 ENV PATH /usr/share/elasticsearch/bin:$PATH
@@ -62,5 +62,5 @@ VOLUME /usr/share/elasticsearch/data
 COPY docker-entrypoint.sh /
 
 EXPOSE 9200 9300
-ENTRYPOINT ["/docker-entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["elasticsearch"]
