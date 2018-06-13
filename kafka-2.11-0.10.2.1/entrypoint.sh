@@ -1,7 +1,7 @@
 #!/bin/sh
 
 
-cat > /kafka/config/server.properties <<EOF
+cat > /opt/kafka_2.11-0.10.2.1/config/server.properties <<EOF
 ##Server Basics##
 #broker.id=1 //不同服务器id不可重复
 delete.topic.enable=true
@@ -31,12 +31,12 @@ EOF
 
 #broker.id
 echo "broker.id=\"$ID !">> /kafka/config/server.properties
-echo "listeners=PLAINTEXT://\"$PLAINTEXT\" :9092!" >> /opt/kafka/config/server.properties
-echo "advertised.listeners=PLAINTEXT://\"$PLAINTEXT\":9092!" >> /kafka/config/server.properties
+echo "listeners=PLAINTEXT://\"$PLAINTEXT\" :9092!" >> /opt/kafka_2.11-0.10.2.1/config/server.properties
+echo "advertised.listeners=PLAINTEXT://\"$PLAINTEXT\":9092!" >> /opt/kafka_2.11-0.10.2.1/config/server.properties
 
 # zookeeper Server conigure
 if [ -n "$SERVERS" ]; then
-    printf '%s' "$SERVERS" | awk 'BEGIN { RS = "," }; { printf "server.%i=%s:2888:3888\n", NR, $0 }' >> /kafka/config/server.properties
+    printf '%s' "$SERVERS" | awk 'BEGIN { RS = "," }; { printf "server.%i=%s:2888:3888\n", NR, $0 }' >> /opt/kafka_2.11-0.10.2.1/config/server.properties
 fi
 
 exec "$@"
