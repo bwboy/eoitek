@@ -31,7 +31,7 @@ EOF
 
 #broker.id
 echo "broker.id=\"$ID !">> /kafka/config/server.properties
-echo "listeners=PLAINTEXT://\"$PLAINTEXT\" :9092!" >> /kafka/config/server.properties
+echo "listeners=PLAINTEXT://\"$PLAINTEXT\" :9092!" >> /opt/kafka/config/server.properties
 echo "advertised.listeners=PLAINTEXT://\"$PLAINTEXT\":9092!" >> /kafka/config/server.properties
 
 # zookeeper Server conigure
