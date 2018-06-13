@@ -28,6 +28,7 @@ log.retention.check.interval.ms=300000
 zookeeper.connection.timeout.ms=6000
 EOF
 
+
 #broker.id
 echo "broker.id=\"$ID !">> /kafka/config/server.properties
 echo "listeners=PLAINTEXT://\"$PLAINTEXT\" :9092!" >> /kafka/config/server.properties
@@ -37,3 +38,5 @@ echo "advertised.listeners=PLAINTEXT://\"$PLAINTEXT\":9092!" >> /kafka/config/se
 if [ -n "$SERVERS" ]; then
     printf '%s' "$SERVERS" | awk 'BEGIN { RS = "," }; { printf "server.%i=%s:2888:3888\n", NR, $0 }' >> /kafka/config/server.properties
 fi
+
+exec "$@"
