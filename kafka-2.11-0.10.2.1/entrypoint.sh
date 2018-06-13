@@ -30,7 +30,7 @@ EOF
 
 
 #broker.id
-echo "broker.id=\"$ID\"">>  /opt/kafka_2.11-0.10.2.1/config/server.properties
+echo "broker.id="$ID>>  /opt/kafka_2.11-0.10.2.1/config/server.properties
 echo "listeners=PLAINTEXT://\"$PLAINTEXT\" :9092" >> /opt/kafka_2.11-0.10.2.1/config/server.properties
 echo "advertised.listeners=PLAINTEXT://\"$PLAINTEXT\":9092" >> /opt/kafka_2.11-0.10.2.1/config/server.properties
 
