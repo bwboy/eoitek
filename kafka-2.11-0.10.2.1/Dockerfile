@@ -20,10 +20,13 @@ RUN chmod +x /usr/bin/start-kafka.sh
 # 9092 is kafka
 EXPOSE  9092
 
-CMD ["/bin/sh", "-c", "/usr/bin/start-kafka.sh"]
+COPY entrypoint.sh /
 
+RUN mkdir -p /data/kafka-2.11-0.10.2.1
+VOLUME /data/kafka-2.11-0.10.2.1
 
 COPY entrypoint.sh /
+RUN  chmod 755 ./entrypoint.sh
 
 ENTRYPOINT ["/usr/local/bin/dumb-init", "/entrypoint.sh"]
 
