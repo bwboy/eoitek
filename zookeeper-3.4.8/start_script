@@ -1,9 +1,9 @@
 docker run -d \
 -e MYID=1 \
--e SERVERS=eoi01 \
+-e SERVERS=eoitek \
 -v /data/zookeeper-3.4.8:/data/zookeeper-3.4.8 \
 -p 2181:2181 \
---name=zookeeper --restart=always eoitek/zookeeper-3.4.8:1.9
+--name=zookeeper01 --network=host --restart=always eoitek/zookeeper-3.4.8:1.9
 
 
 #-e SERVERS=eoi01,eoi02,eoi03 \\
