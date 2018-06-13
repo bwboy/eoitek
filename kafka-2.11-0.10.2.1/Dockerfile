@@ -21,3 +21,12 @@ RUN chmod +x /usr/bin/start-kafka.sh
 EXPOSE  9092
 
 CMD ["/bin/sh", "-c", "/usr/bin/start-kafka.sh"]
+
+
+COPY entrypoint.sh /
+
+ENTRYPOINT ["/usr/local/bin/dumb-init", "/entrypoint.sh"]
+
+ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/zookeeper/bin
+
+CMD ["zkServer.sh", "start-foreground"]
