@@ -1,0 +1,7 @@
+docker run -d \
+-e ID=1 \
+-e PLAINTEXT=eoi01 \
+-e SERVERS=eoi01 \
+-v /data/kafka-2.11-0.10.2.1:/data/kafka-2.11-0.10.2.1 \
+-p 9092:9092 \
+--name=kafka --net=host --restart=always eoitek/kafka-2.11-0.10.2.1:1.9

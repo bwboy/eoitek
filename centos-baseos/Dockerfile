@@ -19,4 +19,7 @@ RUN echo "Asia/shanghai" >> /etc/timezone;
 COPY limits.conf /etc/security/limits.conf
 COPY sysctl.conf /etc/sysctl.conf
 
+# https://github.com/Yelp/dumb-init
+RUN curl -fLsS -o /usr/local/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.0.2/dumb-init_1.0.2_amd64 && chmod +x /usr/local/bin/dumb-init
+
 CMD ["/bin/bash"]
