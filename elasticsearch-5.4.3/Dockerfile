@@ -38,7 +38,7 @@ CMD ["/start"]
 RUN mkdir -p /data/elasticsearch/data
 VOLUME /data/elasticsearch/data
 
-COPY docker-entrypoint.sh /
+COPY entrypoint.sh /
 
 EXPOSE 9200 9300
 ENTRYPOINT ["/entrypoint.sh"]
