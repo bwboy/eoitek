@@ -1,63 +1,42 @@
 FROM eoitek/centos-baseos:1.9
 MAINTAINER Gavin Wang <gavin.wang@eoitek.com>
 
-ENV GOSU_VERSION 1.10
-RUN set -x \
-	&& wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)" \
-	&& wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture).asc" \
-	&& export GNUPGHOME="$(mktemp -d)" \
-	&& gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
-	&& gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
-	&& rm -rf "$GNUPGHOME" /usr/local/bin/gosu.asc \
-	&& chmod +x /usr/local/bin/gosu \
-	&& gosu nobody true
+ARG ES_VERSION=5.5.2
+# avoid conflicts with debian host systems when mounting to host volume
+ARG DEFAULT_ES_USER_UID=1100
 
-RUN set -ex; \
-# https://artifacts.elastic.co/GPG-KEY-elasticsearch
-	key='46095ACC8548582C1A2699A9D27D666CD88E42B4'; \
-	export GNUPGHOME="$(mktemp -d)"; \
-	gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
-	gpg --export "$key" > /etc/apt/trusted.gpg.d/elastic.gpg; \
-	rm -rf "$GNUPGHOME"; \
-	apt-key list
+ADD https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-$ES_VERSION.tar.gz /tmp
+# need to adapt to both Docker's new remote-unpack-ADD behavior and the old behavior
+RUN cd /usr/share && \
+  if [ -f /tmp/elasticsearch-$ES_VERSION.tar.gz ]; then \
+    tar xf /tmp/elasticsearch-$ES_VERSION.tar.gz; \
+    else mv /tmp/elasticsearch-${ES_VERSION} /usr/share; \
+    fi && \
+  rm -f /tmp/elasticsearch-$ES_VERSION.tar.gz
 
-# https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-repositories.html
-# https://www.elastic.co/guide/en/elasticsearch/reference/5.0/deb.html
-RUN set -x \
-	&& yum update all && yum install -y --no-install-recommends apt-transport-https && rm -rf /var/lib/apt/lists/* \
-	&& echo 'deb https://artifacts.elastic.co/packages/5.x/apt stable main' > /etc/apt/sources.list.d/elasticsearch.list
+EXPOSE 9200 9300
 
-ENV ELASTICSEARCH_VERSION 5.4.3
-ENV ELASTICSEARCH_DEB_VERSION 5.4.3
+HEALTHCHECK --timeout=5s CMD wget -q -O - http://$HOSTNAME:9200/_cat/health
 
-RUN set -x \
-	\
-# don't allow the package to install its sysctl file (causes the install to fail)
-# Failed to write '262144' to '/proc/sys/vm/max_map_count': Read-only file system
-	&& dpkg-divert --rename /usr/lib/sysctl.d/elasticsearch.conf \
-	\
-	&& yum update all\
-	&& yum install -y --no-install-recommends "elasticsearch=$ELASTICSEARCH_DEB_VERSION" \
-	&& rm -rf /var/lib/apt/lists/*
+ENV ES_HOME=/usr/share/elasticsearch-$ES_VERSION \
+    DEFAULT_ES_USER=elasticsearch \
+    DEFAULT_ES_USER_UID=$DEFAULT_ES_USER_UID \
+    ES_JAVA_OPTS="-Xms1g -Xmx1g"
 
-ENV PATH /usr/share/elasticsearch/bin:$PATH
+RUN adduser -S -s /bin/sh -u $DEFAULT_ES_USER_UID $DEFAULT_ES_USER
 
-WORKDIR /usr/share/elasticsearch
+VOLUME ["/data","/conf"]
 
-RUN set -ex \
-	&& for path in \
-		./data \
-		./logs \
-		./config \
-		./config/scripts \
-	; do \
-		mkdir -p "$path"; \
-		chown -R elasticsearch:elasticsearch "$path"; \
-	done
+WORKDIR $ES_HOME
 
-COPY config ./config
+COPY java.policy /usr/java/jdk1.8.0_172/jre/lib/security/
+COPY start /start
+COPY log4j2.properties $ES_HOME/config/
 
-VOLUME /usr/share/elasticsearch/data
+CMD ["/start"]
+
+RUN mkdir -p /data/elasticsearch/data
+VOLUME /data/elasticsearch/data
 
 COPY docker-entrypoint.sh /
 

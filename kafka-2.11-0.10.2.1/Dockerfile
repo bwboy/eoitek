@@ -30,6 +30,6 @@ RUN  chmod 755 ./entrypoint.sh
 
 ENTRYPOINT ["/usr/local/bin/dumb-init", "/entrypoint.sh"]
 
-ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/zookeeper/bin
+ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/kafka-2.11-0.10.2.1/bin
 
 CMD ["start-kafka.sh", "start-foreground"]
