@@ -1,0 +1,7 @@
+docker run -d \
+-v /data/mysql-5.5.60:/var/lib/mysql \
+-p 9200:9200 -p 9300:9300 \
+-e MYSQL_ROOT_PASSWORD=eoitek \
+-e MYSQL_DATABASE \
+-p 3306:3306 \
+--name=mariadb --network=host --restart=always mariadb:5.5.60

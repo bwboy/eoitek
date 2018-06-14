@@ -1,5 +1,5 @@
 docker run -d \
--v /data/elasticsearch/data:/data/elasticsearch/data \
+-v /usr/share/elasticsearch/data:/data/elasticsearch/data \
 -v /data:/data/elasticsearch-5.4.3/data \
 -v /logs:/data/elasticsearch-5.4.3/logs \
 -p 9200:9200 -p 9300:9300 \
@@ -7,4 +7,7 @@ docker run -d \
 -e NODE_NAME=eoitek \
 -e UNICAST_HOSTS=eoitek:9300 \
 -e CLUSTER=eoitek \
---name=elasticsearch01 --network=host --restart=always eoitek/elasticsearch-5.4.3
+-e path.conf=/data/elasticsearch-5.4.3/conf \
+-e path.data=/data/elasticsearch-5.4.3/data  \
+-e path.logs=/data/elasticsearch-5.4.3/logs  \
+--name=elasticsearch01 --network=host --restart=always eoitek/elasticsearch-5.4.3:1.9
