@@ -1,7 +1,7 @@
 FROM eoitek/centos-baseos:1.9
 MAINTAINER Gavin Wang <gavin.wang@eoitek.com>
 
-ARG ES_VERSION=5.5.2
+ARG ES_VERSION=5.4.3
 # avoid conflicts with debian host systems when mounting to host volume
 ARG DEFAULT_ES_USER_UID=1100
 
