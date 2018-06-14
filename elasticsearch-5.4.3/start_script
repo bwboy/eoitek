@@ -1,0 +1,8 @@
+docker run -d \
+-v /data/elasticsearch/data:/data/elasticsearch/data \
+-p 9200:9200 -p 9300:9300 \
+-e ES_JAVA_OPTS="-Xms3g -Xmx3g"
+-e NODE_NAME=eoitek
+-e UNICAST_HOSTS=eoitek:9300
+-e CLUSTER=dockers
+--name=elasticsearch01 --network=host --restart=always eoitek/elasticsearch-5.4.3
