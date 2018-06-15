@@ -1,8 +1,10 @@
 FROM eoitek/centos-baseos:1.9
 MAINTAINER Gavin Wang <gavin.wang@eoitek.com>
 
+RUN yum install -y unzip
 RUN mkdir -p /data
-COPY ./itoaServicePackage /itoaServicePackage
+COPY ./05-itoaservice-1.9.1_20180514.zip /05-itoaservice-1.9.1_20180514.zip
+RUN unzip 05-itoaservice-1.9.1_20180514.zip
 WORKDIR /itoaServicePackage
 
 
