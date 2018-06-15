@@ -5,6 +5,8 @@ ARG ES_VERSION=5.4.3
 # avoid conflicts with debian host systems when mounting to host volume
 ARG DEFAULT_ES_USER_UID=1100
 
+RUN ysctl -w vm.max_map_count=262144
+
 ADD https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-$ES_VERSION.tar.gz /tmp
 # need to adapt to both Docker's new remote-unpack-ADD behavior and the old behavior
 RUN cd /usr/share && \

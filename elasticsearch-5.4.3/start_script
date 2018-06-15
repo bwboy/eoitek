@@ -11,3 +11,26 @@ docker run -d \
 -e path.data=/data/elasticsearch-5.4.3/data  \
 -e path.logs=/data/elasticsearch-5.4.3/logs  \
 --name=elasticsearch01 --network=host --restart=always eoitek/elasticsearch-5.4.3:1.9
+
+
+
+
+
+docker run -d \
+-v "/data/esdata":/usr/share/elasticsearch/data \
+-v "$PWD/config":/usr/share/elasticsearch/config \
+-e Des.node.name="eoitek" \
+-p 9200:9200 -p 9300:9300 \
+--name=elasticsearch --network=host --restart=always elasticsearch:5.4.3
+
+
+
+docker run -d \
+-v /data/elasticsearch-5.6.4:/bitnami/elasticsearch \
+-p 9200:9200 \
+-p 9300:9300 \
+-e ELASTICSEARCH_CLUSTER_NAME=eoitek \
+-e ELASTICSEARCH_CLUSTER_HOSTS=eoitek \
+-e LASTICSEARCH_BIND_ADDRESS=192.168.6.100 \
+-e LASTICSEARCH_HEAP_SIZE=3 \
+--name=elasticsearch01 --network=host --restart=always bitnami/elasticsearch:5.6.4
