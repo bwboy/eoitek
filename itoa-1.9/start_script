@@ -1,0 +1,6 @@
+docker run -d \
+-e MYID=1 \
+-e SERVERS=eoitek \
+-v /data/zookeeper-3.4.8:/data/zookeeper-3.4.8 \
+-p 2181:2181 \
+--name=itoa --network=host --restart=always eoitek/itoa-1.9:1.9

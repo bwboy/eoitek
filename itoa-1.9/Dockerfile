@@ -14,6 +14,9 @@ ENV ROOT_PASSWD="eoitek"
 ENV REDIS_LIST="192.168.32.21:6379, 192.168.32.22:6379, 192.168.32.23:6379"
 ENV AKKA_IPS="akka.tcp://itoa@192.168.32.21:2551,akka.tcp://itoa@192.168.32.22:2551,akka.tcp://itoa@192.168.32.23:2551"
 
+EXPOSE  5044
+EXPOSE  6688
+
 ENTRYPOINT ["/usr/local/bin/dumb-init", "/itoaServicePackage/itoaService-restart.sh"]
 
 ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/itoaServicePackage/bin
