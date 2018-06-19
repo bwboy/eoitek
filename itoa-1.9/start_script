@@ -7,3 +7,15 @@ docker run -d \
 -p 5044:5044 \
 -p 6688:6688 \
 --name=itoa --network=host --restart=always eoitek/itoa-1.9:1.9
+
+
+
+docker run -ti \
+-e HOST_IP="192.16.6.100" \
+-e KAFKA_SERVERS="192.168.6.100:9092" \
+-e ZOOKEEPER_SERVERS="192.168.6.100:2181" \
+-e DBCONN_IP="192.168.6.100" \
+-v /data/itoa-1.9:/data/itoa-1.9 \
+-p 5044:5044 \
+-p 6688:6688 \
+--network=host --restart=always eoitek/itoa-1.9:1.9

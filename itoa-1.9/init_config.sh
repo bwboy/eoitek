@@ -1,17 +1,17 @@
 #!/bin/sh
 
 # based on https://github.com/apache/zookeeper/blob/trunk/conf/zoo_sample.cfg
-cat > /opt/zookeeper/conf/zoo.cfg <<EOF
+cat > /itoaServicePackage/itoaservice.conf <<EOF
 ##采集器上报数据的路由信息
 agent {
-hosts = [$HOST_IP] //实际部署中,为客户采集器ip地址
+hosts = ["$HOST_IP"] //实际部署中,为客户采集器ip地址
 port = "5044"
 metadata = ["@collectiontime=Date", "@hostname=String", "@rownumber=Long", "@path=String", "@subpath=String",
 "@sourceip=String", "@message=String"]
 }
 ##ITOA Service信息设置
 server {
-ip = $HOST_IP //ip 一般为当前服务器IP,可以用默认值"0.0.0.0"
+ip = "$HOST_IP" //ip 一般为当前服务器IP,可以用默认值"0.0.0.0"
 port = 6688
 urlSecret = "EBA7AA43D165FC6BF49C0549A8A55D35"
 sessionTimeout = 6
@@ -20,8 +20,8 @@ isRedis = false //是否启用session保存在redis中,如果为否session保存
 }
 ##kafka信息设置
 kafka {
-kafka.bootstrap.servers = $KAFKA_SERVERS
-zookeeper.connect = $ZOOKEEPER_SERVERS
+kafka.bootstrap.servers = "$KAFKA_SERVERS"
+zookeeper.connect = "$ZOOKEEPER_SERVERS"
 partitions = 1
 replications = 2 //副本数建议设置为2
 polltimeout = 5000
@@ -61,11 +61,11 @@ alarmEventTopic = "event_out"
 dbConnection {
 drives = "jdbc:mysql://$DBCONN_IP:3306/DB01?characterEncoding=utf8&useSSL=false"
 user = "root"
-password = $ROOT_PASSWD
+password = "$ROOT_PASSWD"
 }
 ##redis连接设置
 redis {
-clusterList = $REDIS_LIST
+clusterList = "$REDIS_LIST"
 prefix = "DevTest"
 }
 ##itoa id生成，集群中设置0~4
@@ -74,8 +74,8 @@ worker_id = 0
 }
 ##akka集群中设置
 akkaCluster {
-clusterNodes = $AKKA_IPS
-hostname = $HOST_IP //当前服务器节点,当集群环境为多个服务器是,必须制定IP
+clusterNodes = "$AKKA_IPS"
+hostname = "$HOST_IP" //当前服务器节点,当集群环境为多个服务器是,必须制定IP
 port = 2551
 }
 ##spl集群中设置
