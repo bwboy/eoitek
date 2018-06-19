@@ -56,8 +56,6 @@ pm_to_itoa_rsp = "PM_TO_ITOA_RSP"
 alarmEventTopic = "event_out"
 }
 ##数据库连接设置 设置数据库名与密码 集群中不同节点配置同一数据库即可
-}
-##数据库连接设置 设置数据库名与密码 集群中不同节点配置同一数据库即可
 dbConnection {
 drives = "jdbc:mysql://$DBCONN_IP:3306/DB01?characterEncoding=utf8&useSSL=false"
 user = "root"
